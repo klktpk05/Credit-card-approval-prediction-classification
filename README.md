@@ -1,4 +1,4 @@
-![banner](assets/Credit_card_approval_banner.png)
+
 
 ![Python version](https://img.shields.io/badge/Python%20version-3.10%2B-lightgrey)
 ![Type of ML](https://img.shields.io/badge/Type%20of%20ML-Binary%20Classification-red)
