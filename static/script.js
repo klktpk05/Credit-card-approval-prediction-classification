@@ -192,6 +192,9 @@ function showResult(data) {
   if (stepsDiv) stepsDiv.style.display = 'none';
   resultPanel.style.display  = 'block';
 
+  const errDiv = document.getElementById('result-error');
+  if (errDiv) errDiv.style.display = 'none';
+
   if (data.approved) {
     document.getElementById('result-approved').style.display = 'block';
     document.getElementById('result-rejected').style.display  = 'none';
@@ -209,7 +212,7 @@ function showResult(data) {
     const heroCard  = document.getElementById('hero-card');
     const herobadge = document.getElementById('card-status-badge');
     if (heroCard)  heroCard.style.boxShadow  = '0 20px 60px rgba(16,185,129,0.3), 0 0 60px rgba(16,185,129,0.15)';
-    if (herobage) herobage.textContent = '✓ Approved';
+    if (herobadge) herobadge.textContent = '✓ Approved';
 
     // Confetti burst
     confettiBurst();
@@ -236,14 +239,27 @@ function showError(msg) {
   const form = document.getElementById('predict-form');
   form.style.display = 'none';
   resultPanel.style.display = 'block';
-  resultPanel.innerHTML = `
-    <div style="text-align:center;padding:40px">
+
+  const appDiv = document.getElementById('result-approved');
+  if (appDiv) appDiv.style.display = 'none';
+  const rejDiv = document.getElementById('result-rejected');
+  if (rejDiv) rejDiv.style.display = 'none';
+
+  let errDiv = document.getElementById('result-error');
+  if (!errDiv) {
+    errDiv = document.createElement('div');
+    errDiv.id = 'result-error';
+    errDiv.style.textAlign = 'center';
+    errDiv.style.padding = '40px';
+    errDiv.innerHTML = `
       <div style="font-size:3rem;margin-bottom:16px">⚠️</div>
       <h3 style="color:#ef4444;font-family:'Outfit',sans-serif;margin-bottom:8px">Prediction Error</h3>
-      <p style="color:#94a3b8;margin-bottom:24px">${msg}</p>
-      <button class="btn-ghost-sm" onclick="resetForm()">← Try Again</button>
-    </div>
-  `;
+      <p id="error-msg-text" style="color:#94a3b8;margin-bottom:24px"></p>
+    `;
+    resultPanel.insertBefore(errDiv, resultPanel.lastElementChild);
+  }
+  errDiv.style.display = 'block';
+  document.getElementById('error-msg-text').textContent = msg;
 }
 
 
@@ -255,6 +271,9 @@ function resetForm() {
   resultPanel.style.display = 'none';
   form.style.display        = 'block';
   if (stepsDiv) stepsDiv.style.display = 'flex';
+
+  const errDiv = document.getElementById('result-error');
+  if (errDiv) errDiv.style.display = 'none';
 
   // Reset to step 1
   nextStep(1);
